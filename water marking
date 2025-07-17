@@ -1,0 +1,25 @@
+import cv2
+
+# Load the original image
+image = cv2.imread('input.jpg')  # Replace with your image path
+
+# Define watermark text and properties
+watermark_text = "© Mohan Krishna"
+position = (image.shape[1] - 250, image.shape[0] - 20)  # Bottom-right corner
+font = cv2.FONT_HERSHEY_SIMPLEX
+font_scale = 1
+font_color = (255, 255, 255)  # White text
+thickness = 2
+opacity = 0.5  # Watermark transparency
+
+# Make a copy of the original image to overlay the text
+overlay = image.copy()
+cv2.putText(overlay, watermark_text, position, font, font_scale, font_color, thickness, cv2.LINE_AA)
+
+# Blend the original and the overlay with opacity
+watermarked_image = cv2.addWeighted(overlay, opacity, image, 1 - opacity, 0)
+
+# Display the result
+cv2.imshow("Watermarked Image", watermarked_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
