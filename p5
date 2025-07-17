@@ -1,0 +1,12 @@
+import cv2
+import numpy as np
+image = cv2.imread('image.jpg')
+rows, cols = image.shape[:2]
+pts_src = np.float32([[100, 100], [400, 100], [100, 400], [400, 400]])
+pts_dst = np.float32([[80, 120], [420, 80], [100, 450], [420, 420]])
+H, status = cv2.findHomography(pts_src, pts_dst, method=0)
+transformed_image = cv2.warpPerspective(image, H, (cols, rows))
+cv2.imshow('Original Image', image)
+cv2.imshow('DLT Transformed Image', transformed_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
