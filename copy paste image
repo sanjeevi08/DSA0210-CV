@@ -1,0 +1,17 @@
+import cv2
+
+# Load the main image
+image = cv2.imread('input.jpg')  # Replace with your image path
+
+# Step 1: Crop a region from the image (e.g., top-left corner)
+x, y, w, h = 50, 50, 100, 100  # x, y, width, height
+cropped_region = image[y:y+h, x:x+w]
+
+# Step 2: Define position to paste the cropped region (e.g., bottom-right)
+paste_x, paste_y = image.shape[1] - w - 50, image.shape[0] - h - 50
+image[paste_y:paste_y+h, paste_x:paste_x+w] = cropped_region
+
+# Step 3: Show the final image
+cv2.imshow("Cropped & Pasted Image", image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
