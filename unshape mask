@@ -1,0 +1,37 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load image and convert to grayscale
+image = cv2.imread('input.jpg')  # Replace with your image path
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Step 1: Blur the image using Gaussian Blur
+blurred = cv2.GaussianBlur(gray, (5, 5), 1.0)
+
+# Step 2: Create the unsharp mask
+mask = cv2.subtract(gray, blurred)
+
+# Step 3: Add the mask back to the original image (scaled sharpening)
+sharpened = cv2.addWeighted(gray, 1.5, blurred, -0.5, 0)
+
+# Display results
+plt.figure(figsize=(12, 5))
+
+plt.subplot(1, 3, 1)
+plt.title('Original Image')
+plt.imshow(gray, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.title('Blurred Image')
+plt.imshow(blurred, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.title('Sharpened Image (Unsharp Mask)')
+plt.imshow(sharpened, cmap='gray')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
