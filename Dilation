@@ -1,0 +1,31 @@
+import cv2
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Load the image in grayscale
+image = cv2.imread('input.jpg', 0)  # Load as grayscale
+
+# Step 1: Convert to binary image (thresholding)
+_, binary = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
+
+# Step 2: Define structuring element (kernel)
+kernel = np.ones((5, 5), np.uint8)  # 5x5 square kernel
+
+# Step 3: Apply Dilation
+dilated = cv2.dilate(binary, kernel, iterations=1)
+
+# Step 4: Display results
+plt.figure(figsize=(10, 4))
+
+plt.subplot(1, 2, 1)
+plt.title('Original Binary Image')
+plt.imshow(binary, cmap='gray')
+plt.axis('off')
+
+plt.subplot(1, 2, 2)
+plt.title('After Dilation')
+plt.imshow(dilated, cmap='gray')
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
