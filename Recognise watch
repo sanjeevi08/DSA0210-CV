@@ -1,0 +1,30 @@
+import cv2
+import matplotlib.pyplot as plt
+
+# Load reference image of a watch and the scene image
+ref_img = cv2.imread('watch_reference.jpg', 0)      # Reference watch image
+scene_img = cv2.imread('scene_with_watch.jpg', 0)   # Scene where you want to detect
+
+# Initialize ORB detector
+orb = cv2.ORB_create()
+
+# Detect keypoints and compute descriptors
+kp1, des1 = orb.detectAndCompute(ref_img, None)
+kp2, des2 = orb.detectAndCompute(scene_img, None)
+
+# Brute Force Matcher with Hamming distance
+bf = cv2.BFMatcher(cv2.NORM_HAMMING, crossCheck=True)
+matches = bf.match(des1, des2)
+
+# Sort matches based on distance (lower is better)
+matches = sorted(matches, key=lambda x: x.distance)
+
+# Draw top N matches
+matched_img = cv2.drawMatches(ref_img, kp1, scene_img, kp2, matches[:20], None, flags=2)
+
+# Display
+plt.figure(figsize=(12, 6))
+plt.title("Watch Recognition using ORB Matching")
+plt.imshow(matched_img, cmap='gray')
+plt.axis('off')
+plt.show()
